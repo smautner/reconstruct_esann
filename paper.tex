@@ -38,7 +38,17 @@ Address of Second Author's school - Country of Second Author's school\\
 
 
 \begin{abstract}
-% 100 words 
+% 100 words limit
+% g + ^g for wc
+We present a method to design graphs that satisfy multiple objective 
+functions based on sampling by a graph grammar. We evaluate our method
+on chemical compounds and random graphs generated according to a new technique
+that generates graphs with a hidden pattern.
+Sample objective functions are based on neighbors of the target
+in the training set: one base on the distance to the target, one to prevent
+excessive growth during sampling and one that combines the vectorized neighbours
+to penalize sampling in a different direction (in hyperspace :D ).
+
 \end{abstract}
 
 \section{Introduction}
@@ -119,6 +129,7 @@ from an instance farther away the result belongs in the positive class and vice 
 % considering that the vectors lay on a ball it makes sense to expect that the general direction of 
 % landmarks which are by definition close to the target is good to explore versus the opposite direction
 %, right?
+
 
 %Size 
 Using the grammar approach to graph generation results in our experience in 
