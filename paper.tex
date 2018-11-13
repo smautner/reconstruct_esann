@@ -83,11 +83,11 @@ Collisions are easily found and the associated graphs removed.
 \subsection{Graph Grammar}
 The highest scoring Graphs are further explored by generating all neighbors according to 
 the grammar. A graph grammar is defined as a finite set of productions $S=(M,D,E)$ where in 
-a host graph $H$ the "Mother" graph $M$ is replaced by the "Daughter" graph $D$ via an 
+a host graph $H$ the ``Mother" graph $M$ is replaced by the ``Daughter" graph $D$ via an 
 embedding mechanism $E$. We describe the grammar of Costa \cite{costa16gl} in the context of our application.
 The grammar is extracted from what we assume to be the closest neighbors to our target.
 
-For every node in the graph set we extract a "core interface pair", CIP as follows.
+For every node in the graph set we extract a ``core interface pair", CIP as follows.
 Assuming a root node $r$, 
 the subgraph induces by the nodes $\{ n | d(n,r) < radius+distance \}$ is the CIP.
 The subgraph covering the nodes $\{ n | d(n,r) < radius \}$ is the core, while the subgraph covering
