@@ -40,8 +40,8 @@ Address of Second Author's school - Country of Second Author's school\\
 \begin{abstract}
 % 100 words limit
 % g + ^g for wc
-    % more precise !
 
+% more precise !
 We present a method to design graphs that satisfy multiple objective 
 functions based on sampling by a graph grammar.
     
@@ -59,13 +59,15 @@ that generates graphs with a hidden pattern.
 
 % get inspiration here: 
 % https://jcheminf.biomedcentral.com/articles/10.1186/s13321-018-0287-6
-
+% https://arxiv.org/pdf/1806.02473.pdf
+% https://www.cl.cam.ac.uk/~pv273/slides/MILA-AdvGraph.pd
 %***********************************************************************
 % METHODS
 %***********************************************************************
 
 % OVERVIEW
 \section{Methods}
+% mention the pareto idea[somehow] 
 Given a set of graph instances and objective functions, 
 design a graph that satisfies all objective functions. 
 We first find high scoring graphs in the instance set. We use these to extract a graph grammar. 
@@ -158,6 +160,8 @@ Additionally we use rank the graphs according to the sum of the ranks of the pre
 % should eval on chem molecules
 % runtime? 
 
+
+\section{Discussion} 
 
 \subsection*{Thx to parallel and sklearn}
 
