@@ -40,14 +40,18 @@ Address of Second Author's school - Country of Second Author's school\\
 \begin{abstract}
 % 100 words limit
 % g + ^g for wc
+    % more precise !
+
 We present a method to design graphs that satisfy multiple objective 
-functions based on sampling by a graph grammar. We evaluate our method
-on chemical compounds and random graphs generated according to a new technique
-that generates graphs with a hidden pattern.
-Sample objective functions are based on neighbors of the target
+functions based on sampling by a graph grammar.
+    
+    Sample objective functions are based on neighbors of the target
 in the training set: one base on the distance to the target, one to prevent
 excessive growth during sampling and one that combines the vectorized neighbours
 to penalize sampling in a different direction (in hyperspace :D ).
+ We evaluate our method
+on chemical compounds and random graphs generated according to a new technique
+that generates graphs with a hidden pattern.
 
 \end{abstract}
 
@@ -102,7 +106,8 @@ candidates for the application of a production.
 % RECONSTRUCT ALGORITHM 
 
 \subsection{Graph Kernel}
-We use the NSPDK graph kernel package "EDeN"~\cite{costa2010fast}. NSPDK is a Weisfeiler Lehman \cite{weisfeiler}
+% WTH IS A GRAPH LERNEL, y amn i using eden
+We use the NSPDK graph kernel package ``EDeN" ~\cite{costa2010fast}. NSPDK is a Weisfeiler Lehman \cite{weisfeiler}
 kernel with the twist that neighborhood subgraphs are considered in pairs.
 
 The Kernel has two parameters: radius $r$ and distance $d$. Given a node $v$ it extracts features for $v$ according to 
@@ -144,13 +149,13 @@ Additionally we use rank the graphs according to the sum of the ranks of the pre
 %***********************************************************************
 \section{Result}
 
-\subsection{Evaluation Settings}
+\subsection{Empirical evaluation}
 
 % should eval on chem molecules
 % runtime? 
 
 
-
+\subsection*{Thx to parallel and sklearn}
 
 % ****************************************************************************
 % END OF BIBLIOGRAPHY AREA
