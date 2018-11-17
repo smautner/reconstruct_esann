@@ -1,16 +1,15 @@
-\documentclass{esannV2}
-\usepackage[dvips]{graphicx}
-\usepackage[latin1]{inputenc}
-\usepackage{amssymb,amsmath,array}
-\voffset 0 cm \hoffset 0 cm \addtolength{\textwidth}{0cm}
+\documentclass{esannV2} \usepackage[dvips]{graphicx}
+\usepackage[latin1]{inputenc} 
+\usepackage{amssymb,amsmath,array} \voffset 0 cm
+\usepackage{todonotes}
+\hoffset 0 cm \addtolength{\textwidth}{0cm}
 \addtolength{\textheight}{0cm}\addtolength{\leftmargin}{0cm}
 
-\begin{document}
-\title{GRAPHS}
+\begin{document} \title{GRAPHS}
 %***********************************************************************
-% AUTHORS INFORMATION AREA
+%AUTHORS INFORMATION AREA
 %***********************************************************************
-\author{Stefan Mautner$^1$ and Fabrizio Costa$^2$
+\author{Stefan Mautner$^1$ and Fabrizio Costa$^2$, ROLF????
 %
 % Optional short acknowledgment: remove next line if non-needed
 \thanks{This is an optional funding source acknowledgement.}
@@ -21,154 +20,170 @@
 % Addresses and institutions (remove "1- " in case of a single institution)
 1- Albert-Ludwigs-University Freiburg  - Department of Computer Science \\
 Georges-Koehler-Allee 106  - 79110 Freiburg - Germany
-% Fahnenbergplatz 79085 Freiburg
-% Remove the next three lines in case of a single institution
-\vspace{.1cm}\\
-2- School of Second Author - Dept of Second Author \\
-Address of Second Author's school - Country of Second Author's school\\
-}
-\maketitle
+% Fahnenbergplatz 79085 Freiburg Remove the next three lines in case of a
+% single institution
+\vspace{.1cm}\\ 2- School of Second Author - Dept of Second Author \\ Address
+of Second Author's school - Country of Second Author's school\\ } \maketitle
 
 
 
 %***********************************************************************
-% ABSTRACT AND INTRO
+%ABSTRACT AND INTRO
 %***********************************************************************
 
 
 
 \begin{abstract}
-% 100 words limit
-% g + ^g for wc
+% 100 words limit g + ^g for wc
 
-% more precise !
-We present a method to design graphs that satisfy multiple objective 
-functions based on sampling by a graph grammar.
-    
-    Sample objective functions are based on neighbors of the target
-in the training set: one base on the distance to the target, one to prevent
-excessive growth during sampling and one that combines the vectorized neighbours
-to penalize sampling in a different direction (in hyperspace :D ).
- We evaluate our method
-on chemical compounds and random graphs generated according to a new technique
-that generates graphs with a hidden pattern.
+\todo{ more precise! also redo this soonish }
+We present a method to design graphs that satisfy multiple objective functions
+based on sampling by a graph grammar.
+
+Sample objective functions are based on neighbors of the target in the
+training set: one base on the distance to the target, one to prevent
+excessive growth during sampling and one that combines the vectorized
+neighbours to penalize sampling in a different direction (in hyperspace
+:D).  We evaluate our method on chemical compounds and random graphs
+generated according to a new technique that generates graphs with a hidden
+pattern.
 
 \end{abstract}
 
 \section{Introduction}
-
-% get inspiration here: 
+% get inspiration here:
 % https://jcheminf.biomedcentral.com/articles/10.1186/s13321-018-0287-6
 % https://arxiv.org/pdf/1806.02473.pdf
-% https://www.cl.cam.ac.uk/~pv273/slides/MILA-AdvGraph.pd
+% https://www.cl.cam.ac.uk/~pv273/slides/MILA-AdvGraph.pdf
+
+
+%graphs are mega nice.
+A graph is a very flexible datastructure that has many applications such as
+social networks, gene regulatory networks or chemical compounds. Simpler
+structured data might also be represented by graphs, e.g. images or texts.
+
+% computationaly problematic, progress is made
+
+
+samplers are being developed costa16, random nn paper. 
+directed generators are developed mostly on chems, 
+though ez graphs. 
+
+we do new stuff 1. have nice objective function that deals with vectors
+2. work on more complex graphs as we dont only have graphs
+
+demonstrate on chems and a more interesting dataset... 
+
+
+
 %***********************************************************************
-% METHODS
+%METHODS
 %***********************************************************************
 
 % OVERVIEW
 \section{Methods}
 % mention the pareto idea[somehow] 
-Given a set of graph instances and objective functions, 
-design a graph that satisfies all objective functions. 
-We first find high scoring graphs in the instance set. We use these to extract a graph grammar. 
-The high scoring graphs are used as starting input for the following loop: 
-score graphs, 
-select high scoring graphs, 
-generate all possible neighbors according to the grammar, 
+Given a set of graph instances and objective functions, design a graph that
+satisfies all objective functions.  We first find high scoring graphs in the
+instance set. We use these to extract a graph grammar.  The high scoring graphs
+are used as starting input for the following loop: score graphs, select high
+scoring graphs, generate all possible neighbors according to the grammar,
 remove duplicates.
 
-\textbf{Scoring and Selecting Graphs}
-After all graphs are scored by every objective function. We keep the best instances for 
-each function.  
-Duplicates are removed by using a graph kernel and hashing every graph. 
-Collisions are easily found and the associated graphs removed.
+\textbf{Scoring and Selecting Graphs} After all graphs are scored by every
+objective function. We keep the best instances for each function.  Duplicates
+are removed by using a graph kernel and hashing every graph.  Collisions are
+easily found and the associated graphs removed.
 
 % GRAPH GRAMMAR
-\subsection{Graph Grammar}
-The highest scoring Graphs are further explored by generating all neighbors according to 
-the grammar. A graph grammar is defined as a finite set of productions $S=(M,D,E)$ where in 
-a host graph $H$ the ``Mother" graph $M$ is replaced by the ``Daughter" graph $D$ via an 
-embedding mechanism $E$. We describe the grammar of Costa \cite{costa16gl} in the context of our application.
-The grammar is extracted from what we assume to be the closest neighbors to our target.
+\subsection{Graph Grammar} The highest scoring Graphs are further explored by
+generating all neighbors according to the grammar. A graph grammar is defined
+as a finite set of productions $S=(M,D,E)$ where in a host graph $H$ the
+``Mother" graph $M$ is replaced by the ``Daughter" graph $D$ via an embedding
+mechanism $E$. We describe the grammar of Costa \cite{costa16gl} in the context
+of our application.  The grammar is extracted from what we assume to be the
+closest neighbors to our target.
 
-For every node in the graph set we extract a ``core interface pair", CIP as follows.
-Assuming a root node $r$, 
-the subgraph induces by the nodes $\{ n | d(n,r) < radius+distance \}$ is the CIP.
-The subgraph covering the nodes $\{ n | d(n,r) < radius \}$ is the core, while the subgraph covering
-$\{ n | n \notin core , n \in CIP \}$ is the interface.
-CIPs with isomorphic interfaces are called congruent.
-A production would be applied by identifying a CIP in the Host graph, 
-removing the core part and inserting the 
-new core by contracting every node in the interface 
-with their respective partner according to the bijection.
+For every node in the graph set we extract a ``core interface pair", CIP as
+follows.  Assuming a root node $r$, the subgraph induces by the nodes $\{ n |
+d(n,r) < radius+distance \}$ is the CIP.  The subgraph covering the nodes $\{ n
+| d(n,r) < radius \}$ is the core, while the subgraph covering $\{ n | n \notin
+core , n \in CIP \}$ is the interface.  CIPs with isomorphic interfaces are
+called congruent.  A production would be applied by identifying a CIP in the
+Host graph, removing the core part and inserting the new core by contracting
+every node in the interface with their respective partner according to the
+bijection.
 
-Edges-labels are considered by adding an additional node with the appropriate labels and edges to
-a graph. For radius and distance variables we consider graphs to be expanded.
-Since interface graphs can be hashed, it is easy to find possible
-candidates for the application of a production. 
+Edges-labels are considered by adding an additional node with the appropriate
+labels and edges to a graph. For radius and distance variables we consider
+graphs to be expanded.  Since interface graphs can be hashed, it is easy to
+find possible candidates for the application of a production. 
 
 % RECONSTRUCT ALGORITHM 
 
 \subsection{Graph Kernel}
 % WTH IS A GRAPH LERNEL, y amn i using eden
-We use the NSPDK graph kernel package ``EDeN" ~\cite{costa2010fast}. NSPDK is a Weisfeiler Lehman \cite{weisfeiler}
-kernel with the twist that neighborhood subgraphs are considered in pairs.
+We use the NSPDK graph kernel package ``EDeN" ~\cite{costa2010fast}. NSPDK is a
+Weisfeiler Lehman \cite{weisfeiler} kernel with the twist that neighborhood
+subgraphs are considered in pairs.
 
-The Kernel has two parameters: radius $r$ and distance $d$. Given a node $v$ it extracts features for $v$ according to 
-$\{ h(h_g(N^s(v)),h_g(N^s(w))) | s \in \{0..r\} \wedge 0 \leq
-distance(v,w) \leq d  \wedge w\in V \}$.  Where $h$ is a hash function and 
-$h_g$ a hash function on graphs. $N^s$ extracts the neighborhood subgraph of a
-vertex in radus $s$. Note that the hash values themselves are features and the feature
-vectors are very sparse. In the default setting EDeN will normalize the resulting vector.
+The Kernel has two parameters: radius $r$ and distance $d$. Given a node $v$ it
+extracts features for $v$ according to $\{ h(h_g(N^s(v)),h_g(N^s(w))) | s \in
+\{0..r\} \wedge 0 \leq distance(v,w) \leq d  \wedge w\in V \}$.  Where $h$ is a
+hash function and $h_g$ a hash function on graphs. $N^s$ extracts the
+neighborhood subgraph of a vertex in radus $s$. Note that the hash values
+themselves are features and the feature vectors are very sparse. In the default
+setting EDeN will normalize the resulting vector.
 
 \subsection{Objective Functions}
 % a few intro words maybe...
 
-The main objective function is trained on graphs from the training set we call 
-\emph{landmarks} $L$ and their distance to the target. 
-Given a graph $v$ to score, we calculate the euclidean distances to the landmarks. We then subtract 
-the desired distances and give the average of these distances 
-$ {1 \over{\#L} }\sum_{l \in L} |d(v,l)|$.
+The main objective function is trained on graphs from the training set we call
+\emph{landmarks} $L$ and their distance to the target.  Given a graph $v$ to
+score, we calculate the euclidean distances to the landmarks. We then subtract
+the desired distances and give the average of these distances $ {1 \over{\#L}
+}\sum_{l \in L} |d(v,l)|$.
 % why not squared distances?  -> test on BINAC
 
 % i hope i got the rank estimator right...
-Another objective considers the ranks of the landmarks. A SVM is trained 
-with the pairwise difference between the landmark graphs. If we subtract a closer instance
-from an instance farther away the result belongs in the positive class and vice versa.
-% considering that the vectors lay on a ball it makes sense to expect that the general direction of 
-% landmarks which are by definition close to the target is good to explore versus the opposite direction
+Another objective considers the ranks of the landmarks. A SVM is trained with
+the pairwise difference between the landmark graphs. If we subtract a closer
+instance from an instance farther away the result belongs in the positive class
+and vice versa.
+% considering that the vectors lay on a ball it makes sense to expect that the
+% general direction of landmarks which are by definition close to the target is
+% good to explore versus the opposite direction
 %, right?
 
 
 %Size 
-Using the grammar approach to graph generation results in our experience in 
-inflated graph sizes also aiming for a graph about the size of the landmarks is a good guess.
-Therefore we give a score based on the size of the input; $|size(v) - {1\over{\#L}} \sum_{l \in L} size(l)|$.
+Using the grammar approach to graph generation results in our experience in
+inflated graph sizes also aiming for a graph about the size of the landmarks is
+a good guess.  Therefore we give a score based on the size of the input;
+$|size(v) - {1\over{\#L}} \sum_{l \in L} size(l)|$.
 
 %special
-Additionally we use rank the graphs according to the sum of the ranks of the previous objectives.
+Additionally we use rank the graphs according to the sum of the ranks of the
+previous objectives.
 
 %***********************************************************************
-% RESULTS
+%RESULTS
 %***********************************************************************
 \section{Result}
 
 \subsection{Empirical evaluation}
 
 
-% note: sdf converstion stufff is at clevo
-% should eval on chem molecules
+% note: sdf converstion stufff is at clevo should eval on chem molecules
 % runtime? 
 
 
 \section{Discussion} 
 
-\subsection*{Thx to parallel and sklearn}
+\section*{Thx to parallel, sklearn, Funding}
 
 % ****************************************************************************
 % END OF BIBLIOGRAPHY AREA
 % ****************************************************************************
 
-\bibliographystyle{unsrt}
-\bibliography{main}
-\end{document}
+\bibliographystyle{unsrt} \bibliography{main} \end{document}
