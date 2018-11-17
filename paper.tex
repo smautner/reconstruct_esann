@@ -1,18 +1,16 @@
 \documentclass{esannV2} \usepackage[dvips]{graphicx}
-\usepackage[latin1]{inputenc} 
-\usepackage{amssymb,amsmath,array} \voffset 0 cm
-\usepackage{todonotes}
-\hoffset 0 cm \addtolength{\textwidth}{0cm}
+\usepackage[latin1]{inputenc} \usepackage{amssymb,amsmath,array} \voffset 0 cm
+\usepackage{todonotes} \hoffset 0 cm \addtolength{\textwidth}{0cm}
 \addtolength{\textheight}{0cm}\addtolength{\leftmargin}{0cm}
 
-\begin{document} \title{GRAPHS}
+\begin{document} \title{Construction of generic graphs}
 %***********************************************************************
 %AUTHORS INFORMATION AREA
 %***********************************************************************
 \author{Stefan Mautner$^1$ and Fabrizio Costa$^2$, ROLF????
 %
 % Optional short acknowledgment: remove next line if non-needed
-\thanks{This is an optional funding source acknowledgement.}
+\thanks{HERE GOES THE FUNDING THX >>>> ASK ROLF!!!}
 %
 % DO NOT MODIFY THE FOLLOWING '\vspace' ARGUMENT
 \vspace{.3cm}\\
@@ -32,21 +30,18 @@ of Second Author's school - Country of Second Author's school\\ } \maketitle
 %***********************************************************************
 
 
-
 \begin{abstract}
 % 100 words limit g + ^g for wc
 
-\todo{ more precise! also redo this soonish }
-We present a method to design graphs that satisfy multiple objective functions
-based on sampling by a graph grammar.
+\todo{HORRIBLE} We present a method to design graphs that satisfy multiple
+    objective functions based on sampling by a graph grammar.
 
-Sample objective functions are based on neighbors of the target in the
-training set: one base on the distance to the target, one to prevent
-excessive growth during sampling and one that combines the vectorized
-neighbours to penalize sampling in a different direction (in hyperspace
-:D).  We evaluate our method on chemical compounds and random graphs
-generated according to a new technique that generates graphs with a hidden
-pattern.
+Sample objective functions are based on neighbors of the target in the training
+    set: one base on the distance to the target, one to prevent excessive
+    growth during sampling and one that combines the vectorized neighbours to
+    penalize sampling in a different direction (in hyperspace :D).  We evaluate
+    our method on chemical compounds and random graphs generated according to a
+    new technique that generates graphs with a hidden pattern.
 
 \end{abstract}
 
@@ -57,24 +52,51 @@ pattern.
 % https://www.cl.cam.ac.uk/~pv273/slides/MILA-AdvGraph.pdf
 
 
-%graphs are mega nice.
+%graphs are cool
 A graph is a very flexible datastructure that has many applications such as
-social networks, gene regulatory networks or chemical compounds. Simpler
+social networks, gene regulatory networks or chemical compounds.  Simpler
 structured data might also be represented by graphs, e.g. images or texts.
 
-% computationaly problematic, progress is made
+% computationaly problematic, progress is made, graphkernels
+\todo{say s.th about genral graph theory/algorithmsi???} Dealing with graphs in
+machine learning is not easy since reasonable and revertable machine learning
+compatible embeddings are non obvious. Since graph kernels \cite{kernelhist}
+became common, classification problems on graphs can be approached comfortably.
+
+% recent graph generators
+Recently constructive methods for graphs have been developed.  These focus
+mostly on sampling of graph distributions e.g. GraphLearn \cite{costa16gl}  and
+GraphGAN \cite{nngraphsample}. Graph constructors that optimize toward a
+function are primarily focused on chemical compounds such as MolGAN
+\cite{molgan}, the work of Yibi Li \cite{drgen2018} or GCPN \cite{you2018}.
+\newline
 
 
-samplers are being developed costa16, random nn paper. 
-directed generators are developed mostly on chems, 
-though ez graphs. 
-
-we do new stuff 1. have nice objective function that deals with vectors
-2. work on more complex graphs as we dont only have graphs
-
-demonstrate on chems and a more interesting dataset... 
 
 
+We preset a method to generate graphs under an objective function.  The
+algorithm selects high scoring graphs from a training set and starts the
+exploration process by extracting a graph grammar.  \todo{explain grammar
+quickly} The grammar is then used to generate all neighbors of an instance by
+applying all possible grammar rules. With this procedure we overcome
+limitations of the previously mentioned methods for chemical components, making
+it applicable to graphs in general. GCPN \cite{you2018} makes small incremental
+changes to a graph. This is applicable if the vertex and edge label domain is
+small.  The grammar can change larger subgraphs while avoiding to break the
+rules due to the grammar preserving context analuos to a conventional context
+sensitive string grammar \cite{noam} would on poem. 
+
+
+% data generation, directed sampler
+In this work we use assume that a vector representation of the target graph
+that we want to construct is given. We will use the distances to nearest
+neighbors $landmarks$  in the training set as optimisation goal. Thus this
+method allows us to decode a graph in a vector embeding to a real graph. 
+
+We demonstrate our method on molecules briefly but want to concentrate on a new
+way to construct graph datasets. Real world graphs are seldom completely random
+\cite{gintro2018} but exhibit some structure e.g. chemical compounds.  To
+achieve this we apply a graph grammar to a set of random graphs repeatedly.
 
 %***********************************************************************
 %METHODS
@@ -155,7 +177,6 @@ and vice versa.
 % good to explore versus the opposite direction
 %, right?
 
-
 %Size 
 Using the grammar approach to graph generation results in our experience in
 inflated graph sizes also aiming for a graph about the size of the landmarks is
@@ -165,6 +186,13 @@ $|size(v) - {1\over{\#L}} \sum_{l \in L} size(l)|$.
 %special
 Additionally we use rank the graphs according to the sum of the ranks of the
 previous objectives.
+
+
+
+\subsection*{} we used the most common edge and node labels to induce
+artificial grammar rules with core size zero and an interface of 1 edge.  Our
+work used parallel \cite{parallel}, scikit-learn \cite{scikit-learn}. 
+
 
 %***********************************************************************
 %RESULTS
@@ -179,8 +207,6 @@ previous objectives.
 
 
 \section{Discussion} 
-
-\section*{Thx to parallel, sklearn, Funding}
 
 % ****************************************************************************
 % END OF BIBLIOGRAPHY AREA
